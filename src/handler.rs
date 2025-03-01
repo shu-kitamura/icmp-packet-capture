@@ -38,5 +38,6 @@ fn handle_ipv4_packet(ipv4_packet: Ipv4Packet) -> Result<(), AppError> {
 
 fn handle_icmp_packet(icmp_packet: IcmpPacket) -> Result<(), AppError> {
     println!("ICMP packet: {:?}", icmp_packet);
+    println!("ICMP packet payload: {:?}", icmp_packet.payload());
     Ok(())
 }
