@@ -18,7 +18,4 @@ pub enum AppError {
 
     #[error("Unsupported type of ethernet frame.")]
     UnsupportedEthernetFrame,
-
-    #[error("Unsupported type of IP packet.")]
-    UnsupportedIpPacket,
 }

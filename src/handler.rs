@@ -24,16 +24,16 @@ pub fn handle_ethernet_frame(ethernet_packet: EthernetPacket) -> Result<(), AppE
 }
 
 fn handle_ipv4_packet(ipv4_packet: Ipv4Packet) -> Result<(), AppError> {
-    match ipv4_packet.get_next_level_protocol() {
-        IpNextHeaderProtocols::Icmp => {
-            match IcmpPacket::new(ipv4_packet.payload()) {
-                Some(p) => handle_icmp_packet(p),
-                None => return Err(AppError::FailedToCreateIcmpPacket),
-            }
-        },
-        _ => return Err(AppError::UnsupportedIpPacket),
+    if ipv4_packet.get_next_level_protocol() == IpNextHeaderProtocols::Icmp {
+        match IcmpPacket::new(ipv4_packet.payload()) {
+            Some(p) => handle_icmp_packet(p),
+            None => return Err(AppError::FailedToCreateIcmpPacket),
+        }
+    } else {
+        Ok(()) // ICMP 以外のパケットには何もしない
     }
 }
+
 
 fn handle_icmp_packet(icmp_packet: IcmpPacket) -> Result<(), AppError> {
     println!("ICMP packet: {:?}", icmp_packet);

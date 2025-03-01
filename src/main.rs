@@ -31,7 +31,7 @@ fn main() {
                     Err(e) => panic!("{e}")
                 };
                 if let Err(e) = handle_ethernet_frame(ethernet_packet) {
-                    eprint!("{e}");
+                    eprintln!("{e}");
                 }
             },
             Err(e) => panic!("Failed to read packet. {}", e),
