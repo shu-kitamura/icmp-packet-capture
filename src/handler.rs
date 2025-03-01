@@ -19,18 +19,19 @@ pub fn handle_ethernet_frame(ethernet_packet: EthernetPacket) -> Result<(), AppE
                 None => return Err(AppError::FailedToCreateIpv4Packet),
             }
         },
-        _ => return Err(AppError::UnsupportedEthernetFrame),
+        _ => Ok(()), // IPv4 以外のパケットには何もしない
     }
 }
 
 fn handle_ipv4_packet(ipv4_packet: Ipv4Packet) -> Result<(), AppError> {
-    if ipv4_packet.get_next_level_protocol() == IpNextHeaderProtocols::Icmp {
-        match IcmpPacket::new(ipv4_packet.payload()) {
-            Some(p) => handle_icmp_packet(p),
-            None => return Err(AppError::FailedToCreateIcmpPacket),
-        }
-    } else {
-        Ok(()) // ICMP 以外のパケットには何もしない
+    match ipv4_packet.get_next_level_protocol() {
+        IpNextHeaderProtocols::Icmp => {
+            match IcmpPacket::new(ipv4_packet.payload()) {
+                Some(p) => handle_icmp_packet(p),
+                None => return Err(AppError::FailedToCreateIcmpPacket),
+            }
+        },
+        _ => Ok(()) // ICMP 以外のパケットには何もしない
     }
 }
 

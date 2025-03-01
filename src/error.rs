@@ -15,7 +15,4 @@ pub enum AppError {
 
     #[error("Failed to create ICMP packet.")]
     FailedToCreateIcmpPacket,
-
-    #[error("Unsupported type of ethernet frame.")]
-    UnsupportedEthernetFrame,
 }
