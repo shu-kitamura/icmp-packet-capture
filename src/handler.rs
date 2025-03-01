@@ -26,7 +26,7 @@ pub fn handle_ethernet_frame(ethernet_packet: EthernetPacket) -> Result<(), AppE
 fn handle_ipv4_packet(ipv4_packet: Ipv4Packet) -> Result<(), AppError> {
     match ipv4_packet.get_next_level_protocol() {
         IpNextHeaderProtocols::Icmp => {
-            println!("Source address: {:?}", ipv4_packet.get_source());
+            print!("Source address: {:?}, ", ipv4_packet.get_source());
             match IcmpPacket::new(ipv4_packet.payload()) {
                 Some(p) => handle_icmp_packet(p),
                 None => return Err(AppError::FailedToCreateIcmpPacket),
@@ -39,6 +39,5 @@ fn handle_ipv4_packet(ipv4_packet: Ipv4Packet) -> Result<(), AppError> {
 
 fn handle_icmp_packet(icmp_packet: IcmpPacket) -> Result<(), AppError> {
     println!("ICMP packet: {:?}", icmp_packet);
-    println!("ICMP packet payload: {:?}", icmp_packet.payload());
     Ok(())
 }
