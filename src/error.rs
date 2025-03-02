@@ -2,8 +2,8 @@
 
 use thiserror::Error;
 
-#[derive(Error, Debug, PartialEq)]
-pub enum AppError {
+#[derive(Error, Debug)]
+pub enum PacketCaptureError {
     #[error("Failed to get default interface because following error.\n{0}")]
     FailedToGetDefaultInterface(String),
 

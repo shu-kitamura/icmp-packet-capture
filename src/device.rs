@@ -1,20 +1,19 @@
 //! ネットワークデバイスに関する機能を提供します。
 
-use crate::error::AppError;
+use crate::error::PacketCaptureError;
 use pnet_datalink::NetworkInterface;
 
-pub fn get_default_network_interface() -> Result<NetworkInterface, AppError> {
+pub fn get_default_network_interface() -> Result<NetworkInterface, PacketCaptureError> {
     let all_interfaces: Vec<NetworkInterface> = pnet_datalink::interfaces();
     let network_interface: Option<NetworkInterface> = match netdev::get_default_interface() {
         Ok(i) => all_interfaces
-                                .iter()
-                                .find(|iface| iface.name == i.name)
-                                .cloned(),
-        Err(e) => return Err(AppError::FailedToGetDefaultInterface(e)),
+                                .into_iter()
+                                .find(|iface| iface.name == i.name),
+        Err(e) => return Err(PacketCaptureError::FailedToGetDefaultInterface(e)),
     };
 
     match network_interface {
         Some(i) => Ok(i),
-        None => Err(AppError::FailedToGetDefaultInterface("No default interface found.".to_string())),
+        None => Err(PacketCaptureError::FailedToGetDefaultInterface("No default interface found.".to_string())),
     }
 }
