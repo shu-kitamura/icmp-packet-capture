@@ -30,12 +30,12 @@ fn main() {
 
     loop {
         match rx.next() {
-            Ok(frame) => {
-                let ethernet_packet = match create_ethernet_frame(frame) {
+            Ok(bytes) => {
+                let ethernet_frame = match create_ethernet_frame(bytes) {
                     Ok(p) => p,
                     Err(e) => panic!("{e}")
                 };
-                if let Err(e) = handle_ethernet_frame(ethernet_packet) {
+                if let Err(e) = handle_ethernet_frame(ethernet_frame) {
                     eprintln!("{e}");
                 }
             },
