@@ -15,11 +15,13 @@ fn main() {
     let args = Args::parse();
     let interface_name: String = args.network_interface;
 
+    // ネットワークインタフェースを取得する
     let network_interface: NetworkInterface = match get_network_interface(&interface_name) {
         Ok(i) => i,
         Err(e) => panic!("{e}"),
     };
 
+    // チャネルを開く
     let (_, mut rx) = match pnet_datalink::channel(&network_interface, Default::default()) {
         Ok(Ethernet(tx, rx)) => (tx, rx),
         Ok(_) => panic!("Unhandled channel type."),
@@ -28,6 +30,7 @@ fn main() {
 
     println!("Listening started on {}.", network_interface.name);
 
+    // パケットを受信し、処理する
     loop {
         match rx.next() {
             Ok(bytes) => {
