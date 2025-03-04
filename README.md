@@ -1,6 +1,6 @@
 # icmp-packet-capture
 
-icmp-packet-capture は、ネットワーク上を流れるパケットをキャプチャして、ICMP パケットの内容を解析・表示するためのツールです。
+icmp-packet-capture は、指定したネットワークインタフェースのパケットをキャプチャして、ICMP パケットの内容を解析・表示するためのツールです。
 
 ## 特徴
 
