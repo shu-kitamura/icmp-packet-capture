@@ -3,17 +3,13 @@
 use crate::error::PacketCaptureError;
 use pnet_datalink::NetworkInterface;
 
-pub fn get_default_network_interface() -> Result<NetworkInterface, PacketCaptureError> {
-    let all_interfaces: Vec<NetworkInterface> = pnet_datalink::interfaces();
-    let network_interface: Option<NetworkInterface> = match netdev::get_default_interface() {
-        Ok(i) => all_interfaces
-                                .into_iter()
-                                .find(|iface| iface.name == i.name),
-        Err(e) => return Err(PacketCaptureError::FailedToGetDefaultInterface(e)),
-    };
-
-    match network_interface {
-        Some(i) => Ok(i),
-        None => Err(PacketCaptureError::FailedToGetDefaultInterface("No default interface found.".to_string())),
+/// 指定された名前のネットワークインターフェースを取得します。
+pub fn get_network_interface(interface_name: &str) -> Result<NetworkInterface, PacketCaptureError> {
+    // ネットワークインターフェースの一覧を取得し、名前が一致するものを返す
+    for iface in pnet_datalink::interfaces() {
+        if iface.name == interface_name {
+            return Ok(iface);
+        }
     }
+    return Err(PacketCaptureError::FailedToGetInterface(interface_name.to_string()))
 }

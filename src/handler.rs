@@ -10,9 +10,9 @@ use pnet::packet::{
 
 use crate::error::PacketCaptureError;
 
-/// 指定されたバイト列から EthernetPacket を生成する関数
-pub fn create_ethernet_packet(frame: &[u8]) -> Result<EthernetPacket, PacketCaptureError> {
-    match EthernetPacket::new(frame) {
+/// 指定されたバイト列から Ethernet フレームを生成する関数
+pub fn create_ethernet_frame(bytes: &[u8]) -> Result<EthernetPacket, PacketCaptureError> {
+    match EthernetPacket::new(bytes) {
         Some(p) => Ok(p),
         None => Err(PacketCaptureError::FailedToCreateEthernetPacket),
     }

@@ -35,7 +35,13 @@ icmp-packet-capture は、ネットワーク上を流れるパケットをキャ
 管理者権限で実行し、パケットをキャプチャします。  
 
 ```sh
-sudo ./target/release/icmp-packet-capture
+sudo ./target/release/icmp-packet-capture <ネットワークインタフェース名>
+```
+
+例えば、以下のように実行します。  
+
+```sh
+sudo ./target/release/icmp-packet-capture eth0
 ```
 
 キャプチャしたパケットの送信元　IP アドレスと ICMP パケットの内容が表示されます。  

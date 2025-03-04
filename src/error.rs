@@ -4,8 +4,8 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum PacketCaptureError {
-    #[error("Failed to get default interface because following error.\n{0}")]
-    FailedToGetDefaultInterface(String),
+    #[error("Failed to get interface '{0}'")]
+    FailedToGetInterface(String),
 
     #[error("Failed to create ethernet packet.")]
     FailedToCreateEthernetPacket,
